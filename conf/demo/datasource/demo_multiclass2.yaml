@@ -1,0 +1,49 @@
+_target_: gtvision.datasources.VanillaDataSource
+dataflow_creators:  # TODO: rename???
+  train:
+    _target_: gtvision.creators.dataflow.DataLoaderDataFlowCreator
+    dataloader:
+      _target_: gtvision.creators.dataloader2.VanillaDataLoader2Creator
+      datapipe:
+          _target_: gtvision.creators.datapipe.DictBatcherIterDataPipeCreator
+          batch_size: ${oc.select:batch_size,32}
+          shuffle: true
+          data:
+            _target_: gravitorch.data.datacreators.HypercubeVertexDataCreator
+            num_examples: 100000
+            num_classes: ${oc.select:num_classes,50}
+            feature_size: ${oc.select:feature_size,64}
+            noise_std: 0.2
+            random_seed: 3587656467008659679
+  eval:
+    _target_: gtvision.creators.dataflow.DataLoaderDataFlowCreator
+    dataloader:
+      _target_: gtvision.creators.dataloader2.VanillaDataLoader2Creator
+      datapipe:
+        _target_: gtvision.creators.datapipe.DictBatcherIterDataPipeCreator
+        batch_size: ${oc.select:batch_size,32}
+        shuffle: true
+        data:
+          _target_: gravitorch.data.datacreators.HypercubeVertexDataCreator
+          num_examples: 100000
+          num_classes: ${oc.select:num_classes,50}
+          feature_size: ${oc.select:feature_size,64}
+          noise_std: 0.2
+          random_seed: 10206458744488317472
+
+
+#data_creators:
+#  train:
+#    _target_: gravitorch.data.datacreators.HypercubeVertexDataCreator
+#    num_examples: 100000
+#    num_classes: ${oc.select:num_classes,50}
+#    feature_size: ${oc.select:feature_size,64}
+#    noise_std: 0.2
+#    random_seed: 3587656467008659679
+#  eval:
+#    _target_: ${..train._target_}
+#    num_examples: 100000
+#    num_classes: ${..train.num_classes}
+#    feature_size: ${..train.feature_size}
+#    noise_std: ${..train.noise_std}
+#    random_seed: 10206458744488317472
